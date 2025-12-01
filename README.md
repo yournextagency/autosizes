@@ -124,6 +124,26 @@ document.addEventListener('beforeCalculateSizes', (event) => {
 - `width` (number) - Calculated width in pixels (can be modified)
 - `dataAttr` (boolean) - Whether calculation was triggered by data attribute
 
+### afterCalculateSizes
+
+Fired after the `sizes` attribute has been set. Useful for tracking or logging size calculations.
+
+```javascript
+document.addEventListener('afterCalculateSizes', (event) => {
+  console.log('Size set:', event.detail.sizes);
+  console.log('Width:', event.detail.width);
+
+  // Can't modify anymore, but useful for:
+  // - Analytics tracking
+  // - Debugging
+  // - Triggering other updates
+});
+```
+
+**Event detail properties:**
+- `width` (number) - Calculated width in pixels (read-only)
+- `sizes` (string) - The sizes value that was set (e.g., "450px")
+
 ## API
 
 ### Manual Control

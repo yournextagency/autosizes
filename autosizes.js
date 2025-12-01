@@ -189,6 +189,12 @@ const autoSizer = (() => {
         sources[i].setAttribute('sizes', widthPx);
       }
     }
+
+    // Trigger afterCalculateSizes event
+    triggerEvent(elem, 'afterCalculateSizes', {
+      width,
+      sizes: widthPx,
+    });
   });
 
   /**

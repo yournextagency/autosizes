@@ -248,6 +248,13 @@
       log(`beforeCalculateSizes: ${elem.tagName} width=${width}px`, 'event');
     });
 
+    // Listen to afterCalculateSizes event
+    document.addEventListener('afterCalculateSizes', (event) => {
+      const elem = event.target;
+      const sizes = event.detail.sizes;
+      log(`afterCalculateSizes: ${elem.tagName} sizes="${sizes}"`, 'event');
+    });
+
     // Update display info
     function updateInfo() {
       // Test 1
