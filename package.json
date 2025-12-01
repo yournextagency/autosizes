@@ -1,7 +1,7 @@
 {
   "name": "autosizes",
   "version": "1.0.0",
-  "description": "Automatic sizes attribute calculator for responsive images",
+  "description": "Automatic sizes attribute calculator for responsive images. Extracted from lazysizes by Alexander Farkas.",
   "main": "index.js",
   "type": "module",
   "keywords": [
@@ -10,8 +10,29 @@
     "sizes",
     "srcset",
     "picture",
-    "responsive-images"
+    "responsive-images",
+    "lazysizes",
+    "autosizes"
   ],
-  "author": "YNA Media",
-  "license": "MIT"
+  "author": "Oleg Tishkin",
+  "contributors": [
+    {
+      "name": "Alexander Farkas",
+      "url": "https://github.com/aFarkas/lazysizes",
+      "role": "Original lazysizes author"
+    },
+    {
+      "name": "Claude (Anthropic)",
+      "role": "Code assistance"
+    }
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yournextagency/media"
+  },
+  "homepage": "https://github.com/yournextagency/media/tree/main/client/src/js/lib/autosizes",
+  "bugs": {
+    "url": "https://github.com/yournextagency/media/issues"
+  }
 }

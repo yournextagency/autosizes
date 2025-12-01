@@ -1,8 +1,16 @@
 /**
  * AutoSizes - Automatic sizes attribute calculator for responsive images
- * Extracted from lazysizes with only sizes calculation functionality
+ *
+ * Extracted from lazysizes (https://github.com/aFarkas/lazysizes)
+ * Original work Copyright (c) 2015 Alexander Farkas
+ * Modified work Copyright (c) 2025 Oleg Tishkin
+ * Code assistance Copyright (c) 2025 Anthropic, PBC (Claude Code)
+ *
  * @version 1.0.0
  * @license MIT
+ * @author Oleg Tishkin
+ * @contributors Claude (Anthropic)
+ * @based-on lazysizes by Alexander Farkas
  */
 
 /**

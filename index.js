@@ -1,6 +1,12 @@
 /**
  * AutoSizes - Entry point with auto-initialization
- * Usage: import 'autosizes';
+ *
+ * Based on lazysizes by Alexander Farkas
+ * Copyright (c) 2015 Alexander Farkas (original work)
+ * Copyright (c) 2025 Oleg Tishkin (modified work)
+ * Copyright (c) 2025 Anthropic, PBC (Claude Code - code assistance)
+ *
+ * @license MIT
  */
 
 import autoSizes from './autosizes.js';
