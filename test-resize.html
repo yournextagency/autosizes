@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoSizes Resize Test</title>
+  <style>
+    body {
+      font-family: system-ui;
+      padding: 20px;
+    }
+
+    .container {
+      background: #f0f0f0;
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: width 0.3s;
+    }
+
+    .resizable {
+      width: 600px;
+      border: 2px solid #333;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border: 2px solid #4caf50;
+    }
+
+    .controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      padding: 15px;
+      border: 2px solid #333;
+      border-radius: 8px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      background: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1565c0;
+    }
+
+    .info {
+      background: #e3f2fd;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 14px;
+    }
+
+    .log {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 300px;
+      max-height: 200px;
+      overflow-y: auto;
+      background: #263238;
+      color: #aed581;
+      padding: 10px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <h1>AutoSizes Resize Test</h1>
+
+  <div class="controls">
+    <button onclick="setWidth(300)">300px</button>
+    <button onclick="setWidth(600)">600px</button>
+    <button onclick="setWidth(900)">900px</button>
+    <button onclick="window.dispatchEvent(new Event('resize'))">Trigger Resize</button>
+    <button onclick="updateInfo()">Update Info</button>
+  </div>
+
+  <div class="container resizable" id="resizable">
+    <h2>Resizable Container</h2>
+    <p>Container width: <span id="containerWidth">600</span>px</p>
+
+    <img
+      class="autosizes"
+      sizes="auto"
+      srcset="https://via.placeholder.com/300x200?text=300w 300w,
+              https://via.placeholder.com/600x400?text=600w 600w,
+              https://via.placeholder.com/900x600?text=900w 900w,
+              https://via.placeholder.com/1200x800?text=1200w 1200w"
+      src="https://via.placeholder.com/600x400?text=fallback"
+      alt="Test image"
+      id="testImg"
+    />
+
+    <div class="info">
+      <div><strong>sizes attribute:</strong> <span id="sizesValue">-</span></div>
+      <div><strong>img.offsetWidth:</strong> <span id="imgWidth">-</span>px</div>
+      <div><strong>Has autosized class:</strong> <span id="hasClass">-</span></div>
+      <div><strong>_autosizesWidth:</strong> <span id="internalWidth">-</span></div>
+    </div>
+  </div>
+
+  <div class="log" id="log"></div>
+
+  <script type="module">
+    import autoSizes from './index.js';
+
+    // Make available globally
+    window.autoSizes = autoSizes;
+
+    const log = (msg) => {
+      const logEl = document.getElementById('log');
+      const time = new Date().toLocaleTimeString();
+      logEl.innerHTML = `[${time}] ${msg}<br>` + logEl.innerHTML;
+      console.log(`[${time}] ${msg}`);
+    };
+
+    // Log resize events
+    let resizeCount = 0;
+    window.addEventListener('resize', () => {
+      resizeCount++;
+      log(`Resize event #${resizeCount}`);
+    });
+
+    // Log custom events
+    document.addEventListener('beforeSizesUpdate', (e) => {
+      log(`beforeSizesUpdate: width=${e.detail.width}`);
+    });
+
+    document.addEventListener('afterSizesUpdate', (e) => {
+      log(`afterSizesUpdate: sizes="${e.detail.sizes}"`);
+      updateInfo();
+    });
+
+    window.setWidth = (width) => {
+      const container = document.getElementById('resizable');
+      container.style.width = width + 'px';
+      document.getElementById('containerWidth').textContent = width;
+      log(`Container width set to ${width}px`);
+
+      // Wait for DOM update, then trigger resize
+      setTimeout(() => {
+        log('Dispatching resize event...');
+        window.dispatchEvent(new Event('resize'));
+      }, 50);
+    };
+
+    window.updateInfo = () => {
+      const img = document.getElementById('testImg');
+      document.getElementById('sizesValue').textContent = img.getAttribute('sizes') || 'auto';
+      document.getElementById('imgWidth').textContent = img.offsetWidth;
+      document.getElementById('hasClass').textContent = img.classList.contains('autosized') ? 'Yes' : 'No';
+      document.getElementById('internalWidth').textContent = img._autosizesWidth || 'not set';
+    };
+
+    // Initial info update
+    setTimeout(() => {
+      log('Page loaded, library initialized');
+      updateInfo();
+    }, 200);
+  </script>
+</body>
+</html>

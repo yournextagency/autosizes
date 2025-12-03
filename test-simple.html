@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Resize Test</title>
+  <style>
+    body { font-family: monospace; padding: 20px; }
+    .container {
+      width: 600px;
+      background: #f0f0f0;
+      padding: 20px;
+      transition: width 0.3s;
+      margin-bottom: 20px;
+    }
+    img { max-width: 100%; border: 2px solid green; display: block; }
+    button { padding: 15px 30px; font-size: 18px; margin: 10px; }
+    .info {
+      background: yellow;
+      padding: 15px;
+      margin: 10px 0;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Resize Test</h1>
+
+  <button onclick="setWidth(300)">Width 300px</button>
+  <button onclick="setWidth(600)">Width 600px</button>
+  <button onclick="setWidth(900)">Width 900px</button>
+
+  <div class="info">
+    Current sizes: <span id="currentSizes">checking...</span>
+  </div>
+
+  <div class="container" id="container">
+    <p>Container width: <span id="widthDisplay">600px</span></p>
+    <img
+      class="autosizes"
+      sizes="auto"
+      srcset="https://via.placeholder.com/300x200?text=300w 300w,
+              https://via.placeholder.com/600x400?text=600w 600w,
+              https://via.placeholder.com/900x600?text=900w 900w"
+      src="https://via.placeholder.com/300x200"
+      id="testImg"
+    />
+  </div>
+
+  <script type="module">
+    import autoSizes from './autosizes.js';
+    window.autoSizes = autoSizes;
+
+    // Initialize
+    autoSizes.init();
+
+    function updateDisplay() {
+      const img = document.getElementById('testImg');
+      const sizes = img.getAttribute('sizes');
+      document.getElementById('currentSizes').textContent = sizes;
+      console.log('sizes attribute:', sizes);
+      console.log('_autosizesWidth:', img._autosizesWidth);
+    }
+
+    window.setWidth = (width) => {
+      const container = document.getElementById('container');
+      container.style.width = width + 'px';
+      document.getElementById('widthDisplay').textContent = width + 'px';
+
+      console.log('==== Changing width to ' + width + 'px ====');
+
+      // Trigger resize event
+      setTimeout(() => {
+        console.log('Dispatching resize event');
+        window.dispatchEvent(new Event('resize'));
+
+        // Update display after debounce (99ms + some margin)
+        setTimeout(updateDisplay, 200);
+      }, 50);
+    };
+
+    // Listen to afterSizesUpdate
+    document.addEventListener('afterSizesUpdate', (e) => {
+      console.log('afterSizesUpdate event:', e.detail);
+      updateDisplay();
+    });
+
+    // Initial display
+    setTimeout(updateDisplay, 300);
+  </script>
+</body>
+</html>

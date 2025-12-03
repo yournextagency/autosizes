@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Debug Test</title>
+  <style>
+    body { font-family: monospace; padding: 20px; }
+    .container { width: 50%; background: #f0f0f0; padding: 20px; }
+    img { max-width: 100%; border: 2px solid green; }
+    button { padding: 10px 20px; margin: 10px; font-size: 16px; }
+    .log { background: #263238; color: #aed581; padding: 10px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Debug Resize Test</h1>
+
+  <button onclick="changeWidth()">Change Container Width</button>
+  <button onclick="manualUpdate()">Manual Update</button>
+  <button onclick="showDebug()">Show Debug Info</button>
+
+  <div class="container" id="container">
+    <p>Container width: <span id="width">50%</span></p>
+    <img
+      class="autosizes"
+      sizes="auto"
+      srcset="https://via.placeholder.com/300x200 300w,
+              https://via.placeholder.com/600x400 600w,
+              https://via.placeholder.com/900x600 900w"
+      src="https://via.placeholder.com/300x200"
+      alt="test"
+      id="img"
+    />
+    <div style="margin-top: 10px;">
+      sizes: <strong id="sizes">-</strong><br>
+      offsetWidth: <strong id="offsetWidth">-</strong>px
+    </div>
+  </div>
+
+  <div class="log" id="log"></div>
+
+  <script type="module">
+    // Configure with debug
+    window.autoSizesConfig = {
+      resizeDebounce: 99
+    };
+
+    import autoSizes from './index.js';
+    window.autoSizes = autoSizes;
+
+    const log = (msg) => {
+      const el = document.getElementById('log');
+      const time = new Date().toLocaleTimeString();
+      el.innerHTML += `[${time}] ${msg}<br>`;
+      console.log(msg);
+    };
+
+    let isNarrow = false;
+    window.changeWidth = () => {
+      const container = document.getElementById('container');
+      if (isNarrow) {
+        container.style.width = '80%';
+        document.getElementById('width').textContent = '80%';
+      } else {
+        container.style.width = '30%';
+        document.getElementById('width').textContent = '30%';
+      }
+      isNarrow = !isNarrow;
+      log('Container width changed');
+
+      // Trigger window resize
+      setTimeout(() => {
+        log('Dispatching resize event');
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    };
+
+    window.manualUpdate = () => {
+      log('Calling autoSizes.updateAll()');
+      autoSizes.updateAll();
+      setTimeout(updateDisplay, 100);
+    };
+
+    window.showDebug = () => {
+      const img = document.getElementById('img');
+      log('=== Debug Info ===');
+      log(`sizes attribute: ${img.getAttribute('sizes')}`);
+      log(`offsetWidth: ${img.offsetWidth}`);
+      log(`_autosizesWidth: ${img._autosizesWidth}`);
+      log(`has autosized class: ${img.classList.contains('autosized')}`);
+      log(`autoSizes exists: ${typeof autoSizes !== 'undefined'}`);
+    };
+
+    function updateDisplay() {
+      const img = document.getElementById('img');
+      document.getElementById('sizes').textContent = img.getAttribute('sizes') || 'auto';
+      document.getElementById('offsetWidth').textContent = img.offsetWidth;
+    }
+
+    // Listen to events
+    document.addEventListener('beforeSizesUpdate', (e) => {
+      log(`EVENT: beforeSizesUpdate, width=${e.detail.width}`);
+    });
+
+    document.addEventListener('afterSizesUpdate', (e) => {
+      log(`EVENT: afterSizesUpdate, sizes="${e.detail.sizes}"`);
+      updateDisplay();
+    });
+
+    // Test resize listener
+    window.addEventListener('resize', () => {
+      log('Window resize event received');
+    });
+
+    // Initial
+    setTimeout(() => {
+      log('Page loaded');
+      updateDisplay();
+      showDebug();
+    }, 200);
+  </script>
+</body>
+</html>

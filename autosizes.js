@@ -6,7 +6,7 @@
  * Modified work Copyright (c) 2025 Oleg Tishkin
  * Code assistance Copyright (c) 2025 Anthropic, PBC (Claude Code)
  *
- * @version 1.0.3
+ * @version 1.0.4
  * @license MIT
  * @author Oleg Tishkin
  * @contributors Claude (Anthropic)
@@ -197,16 +197,6 @@ const autoSizer = (() => {
   let elements;
 
   /**
-   * Check if element has sizes="auto" attribute
-   * @param {Element} elem - Element to check
-   * @returns {boolean}
-   */
-  const hasSizesAuto = (elem) => {
-    const value = elem.getAttribute(config.sizesAttr);
-    return value === 'auto';
-  };
-
-  /**
    * Set sizes attribute on element
    * @param {Element} elem - The element
    * @param {string} sizesValue - The sizes value (e.g., "450px")
@@ -234,10 +224,9 @@ const autoSizer = (() => {
     elem._autosizesWidth = width;
     const widthPx = `${width}px`;
 
-    // Set sizes attribute on img element (only if it has sizes="auto")
-    if (hasSizesAuto(elem)) {
-      setSizesAttr(elem, widthPx);
-    }
+    // Set sizes attribute on img element
+    // Elements with targetElementClass are always updated on resize
+    setSizesAttr(elem, widthPx);
 
     // Add processed class to mark element as complete
     if (config.processedElementClass) {
