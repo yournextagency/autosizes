@@ -6,7 +6,7 @@
  * Modified work Copyright (c) 2025 Oleg Tishkin
  * Code assistance Copyright (c) 2025 Anthropic, PBC (Claude Code)
  *
- * @version 1.0.0
+ * @version 1.0.3
  * @license MIT
  * @author Oleg Tishkin
  * @contributors Claude (Anthropic)

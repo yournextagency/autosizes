@@ -7,7 +7,7 @@ Automatic `sizes` attribute calculation for responsive images.
 ## Features
 
 - 🎯 Automatic calculation of `sizes` attribute from element width
-- 📦 Tiny size (~3.3KB minified, ~1.5KB gzipped)
+- 📦 Tiny size (~2.2KB minified, ~1KB gzipped)
 - 🚀 High performance with RAF batching and debounced resize
 - 🖼️ Smart `<picture>` support - only `<img>` needs `sizes` attribute
 - 🔄 Auto-updates on window resize
@@ -261,9 +261,9 @@ This is a **focused extraction** of only the `sizes` calculation feature from la
 
 | Metric | lazysizes | auto-sizes | Savings |
 |--------|-----------|-----------|---------|
-| Source code | 19.9 KB / 813 lines | 8.2 KB / 353 lines | **59%** |
-| Minified | 7.8 KB | ~3.3 KB | **58%** |
-| Gzipped | ~3.5 KB | ~1.5 KB | **57%** |
+| Source code | 19.9 KB / 813 lines | 8.0 KB / 328 lines | **60%** |
+| Minified | 7.8 KB | ~2.2 KB | **72%** |
+| Gzipped | ~3.5 KB | ~1.0 KB | **71%** |
 
 ### When to Use Each
 
